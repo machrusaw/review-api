@@ -5,25 +5,39 @@ const PORT = process.env.PORT || 3000;
 // Middleware untuk parsing body dari request
 app.use(express.json());
 
-// Data dummy review
-let reviews = [
-    { id: 1, name: "Savannah Nguyen", review: "Lorem ipsum dolor sit amet consectetur. Nec sit enim tellus faucibus bibendum ullamcorper. Phasellus tristique aenean at lorem sed scelerisque." },
-    { id: 2, name: "Esther Howard", review: "Lorem ipsum dolor sit amet consectetur. Nec sit enim tellus faucibus bibendum ullamcorper. Phasellus tristique aenean at lorem sed scelerisque." },
-    { id: 3, name: "Esther Howard", review: "Lorem ipsum dolor sit amet consectetur. Nec sit enim tellus faucibus bibendum ullamcorper. Phasellus tristique aenean at lorem sed scelerisque." },
-    // Tambahkan review lain di sini
+// Data dummy review produk pertanian
+let productReviews = [
+    { id: 1, name: "Faisal Ahmad", review: "Saya sangat senang dengan hasil tanaman jagung yang saya dapatkan dari Tanija. Benih berkualitas dan tanaman tumbuh subur dengan bantuan pupuk organik yang disarankan oleh Tanija." },
+    { id: 2, name: "Dewi Susanti", review: "Saya baru saja membeli bibit tomat dari Tanija dan saya sangat puas dengan kualitasnya. Bibit tumbuh dengan baik dan menghasilkan buah yang segar dan berkualitas." },
+    { id: 3, name: "Budi Santoso", review: "Saya menggunakan pestisida yang direkomendasikan oleh Tanija untuk mengatasi hama pada tanaman sayuran saya. Pestisida tersebut sangat efektif dan ramah lingkungan. Terima kasih Tanija!" },
+    { id: 4, name: "Rina Fitriani", review: "Tanija memberikan layanan pelanggan yang sangat baik. Saya mendapatkan informasi yang jelas dan solusi yang tepat terkait permasalahan tanaman saya. Sangat direkomendasikan!" },
+    { id: 5, name: "Irfan Setiawan", review: "Produk-produk Tanija selalu berkualitas. Saya sudah beberapa kali membeli berbagai jenis pupuk dan benih, semuanya memberikan hasil yang memuaskan. Terima kasih Tanija!" },
+    { id: 6, name: "Siti Rahmawati", review: "Saya sangat terkesan dengan kecepatan pengiriman produk dari Tanija. Pesanan saya selalu sampai tepat waktu dan dalam kondisi yang baik. Pelayanan yang sangat baik!" }
 ];
 
-// Mendapatkan semua review
-app.get('/reviews', (req, res) => {
-    res.json(reviews);
+// Mendapatkan semua review produk pertanian
+app.get('/product-reviews', (req, res) => {
+    res.json(productReviews);
 });
 
-// Menambahkan review baru
-app.post('/reviews', (req, res) => {
+// Menambahkan review baru tentang produk pertanian
+app.post('/product-reviews', (req, res) => {
     const { name, review } = req.body;
-    const id = reviews.length + 1;
-    reviews.push({ id, name, review });
-    res.status(201).json({ message: "Review berhasil ditambahkan", review: { id, name, review } });
+    const id = productReviews.length + 1;
+    productReviews.push({ id, name, review });
+    res.status(201).json({ message: "Review produk berhasil ditambahkan", review: { id, name, review } });
+});
+
+// Menghapus review berdasarkan ID
+app.delete('/product-reviews/:id', (req, res) => {
+    const { id } = req.params;
+    const index = productReviews.findIndex(review => review.id === parseInt(id));
+    if (index !== -1) {
+        productReviews.splice(index, 1);
+        res.json({ message: `Review dengan ID ${id} berhasil dihapus` });
+    } else {
+        res.status(404).json({ message: `Review dengan ID ${id} tidak ditemukan` });
+    }
 });
 
 // Jalankan server
