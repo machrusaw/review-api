@@ -1,9 +1,13 @@
 const express = require('express');
+const cors = require('cors'); // Import cors
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware untuk parsing body dari request
 app.use(express.json());
+
+// Middleware untuk mengaktifkan CORS
+app.use(cors());
 
 // Data dummy review produk pertanian
 let productReviews = [
